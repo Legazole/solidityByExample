@@ -17,5 +17,11 @@ module.exports = {
         user: {
             default: 1,
         },
+        hero: {
+            default: 2,
+        },
+        villain: {
+            default: 3,
+        },
     },
 }
