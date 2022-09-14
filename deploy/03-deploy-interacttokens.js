@@ -4,15 +4,15 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deployer } = await getNamedAccounts()
     const { deploy, log } = deployments
 
-    log("deploying genecoin on localhost")
+    log("deploying contract on localhost")
 
-    const genecoin = await deploy("geneCoin", {
+    const contract = await deploy("tradeTokens", {
         from: deployer,
         log: true,
     })
 
-    log(`genecoin deployed at ${genecoin.address}`)
+    log(`contract deployed at ${contract.address}`)
     log("------------------------------")
 }
 
-module.exports.tags = ["genecoin"]
+module.exports.tags = ["interact"]

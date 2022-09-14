@@ -15,4 +15,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     log("------------------------------------------")
 }
 
-module.exports.tags = ["MyContract"]
+module.exports.tags = ["vault"]
