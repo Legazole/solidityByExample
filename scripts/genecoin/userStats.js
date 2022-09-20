@@ -2,7 +2,7 @@ const { getNamedAccounts, ethers } = require("hardhat")
 
 async function main() {
     const { deployer, user, hero, villain } = await getNamedAccounts()
-    const geneCoin = await ethers.getContract("geneCoin", deployer)
+    const geneCoin = await ethers.getContract("GeneCoin", deployer)
 
     const deployerBalance = await geneCoin.balanceOf(deployer)
     const deployerAllowedUser = await geneCoin.allowance(deployer, user)

@@ -5,9 +5,9 @@ async function main() {
 
     const amount = 50
 
-    const geneCoinDeployer = await ethers.getContract("geneCoin", deployer)
-    const geneCoinUser = await ethers.getContract("geneCoin", user)
-    const geneCoinHero = await ethers.getContract("geneCoin", hero)
+    const geneCoinDeployer = await ethers.getContract("GeneCoin", deployer)
+    const geneCoinUser = await ethers.getContract("GeneCoin", user)
+    const geneCoinHero = await ethers.getContract("GeneCoin", hero)
 
     const deployerAllowedHero = await geneCoinUser.allowance(deployer, hero)
     console.log(

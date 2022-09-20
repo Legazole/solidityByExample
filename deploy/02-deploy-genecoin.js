@@ -6,7 +6,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     log("deploying genecoin on localhost")
 
-    const genecoin = await deploy("geneCoin", {
+    const genecoin = await deploy("GeneCoin", {
         from: deployer,
         log: true,
     })

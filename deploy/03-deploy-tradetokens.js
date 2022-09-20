@@ -6,7 +6,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     log("deploying contract on localhost")
 
-    const contract = await deploy("tradeTokens", {
+    const contract = await deploy("TradeTokens", {
         from: deployer,
         log: true,
     })

@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract geneCoin is ERC20, Ownable {
+contract GeneCoin is ERC20, Ownable {
     uint256 maxSupply = 10000;
 
     modifier capped() {
@@ -20,7 +20,7 @@ contract geneCoin is ERC20, Ownable {
         _mint(address(this), 1000);
     }
 
-    function mint(address to, uint256 amount) public onlyOwner capped {
+    function mint(address to, uint256 amount) public capped {
         _mint(to, amount);
     }
 
@@ -28,5 +28,7 @@ contract geneCoin is ERC20, Ownable {
         return balanceOf(address(this));
     }
 
-    receive() external payable {}
+    receive() external payable {
+        _mint(msg.sender, uint256(msg.value));
+    }
 }
