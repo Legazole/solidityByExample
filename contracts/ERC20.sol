@@ -33,7 +33,7 @@ contract ERC20 is IERC20 {
         uint256 amount
     ) external returns (bool) {
         balanceOf[sender] -= amount;
-        allowance[sender][recipient] -= amount;
+        allowance[sender][msg.sender] -= amount;
         balanceOf[recipient] += amount;
         emit Transfer(sender, recipient, amount);
         return true;
