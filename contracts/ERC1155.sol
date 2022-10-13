@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./interfaces/IERC1155.sol";
+import "./interfaces/IERC1155Receiver.sol";
 
 contract ERC1155 is IERC1155 {
     //mapping from tokenId to accounts balances
@@ -38,26 +39,16 @@ contract ERC1155 is IERC1155 {
         return batchBalances;
     }
 
+    function setApprovalForAll(address operator, bool approved) public {
+        _operatorApprovals[msg.sender][operator] = approved;
+    }
+
     function isApprovedForAll(address owner, address operator)
         public
         view
         returns (bool)
     {
         return _operatorApprovals[owner][operator];
-    }
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 id,
-        uint256 value,
-        bytes memory data
-    ) public {
-        require(
-            msg.sender == from || isApprovedForAll(from, msg.sender),
-            "Unauthorized"
-        );
-        _safeTransferFrom(from, to, id, value, data);
     }
 
     function _safeTransferFrom(
@@ -86,6 +77,22 @@ contract ERC1155 is IERC1155 {
         _balances[id][to] += amount;
 
         emit TransferSingle(operator, from, to, id, amount);
+
+        _doSafeTransferAcceptanceCheck(operator, from, to, id, amount, data);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 value,
+        bytes memory data
+    ) public {
+        require(
+            msg.sender == from || isApprovedForAll(from, msg.sender),
+            "Unauthorized"
+        );
+        _safeTransferFrom(from, to, id, value, data);
     }
 
     function _safeBatchTransferFrom(
@@ -109,26 +116,40 @@ contract ERC1155 is IERC1155 {
         }
 
         emit TransferBatch(operator, from, to, ids, amounts);
+
+        _doSafeBatchTransferAcceptanceCheck(
+            operator,
+            from,
+            to,
+            ids,
+            amounts,
+            data
+        );
     }
 
-    /*
-    function safeTransferFrom(
+    function safeBatchTransferFrom(
         address from,
         address to,
-        uint256 id,
-        uint256 amount,
-        bytes memory data
-    ) external {
-        moved to internal transfer function
-        require(to != address(0), "ERC1155: sending to zeroth address");
-
-        moved to isApprovedForAll function
-        require(_operatorApprovals[from][msg.sender] == true);
-
-        moved to internal transfer function
-        require(_balances[id][from] >= amount);
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes calldata data
+    ) public {
+        require(
+            msg.sender == from || isApprovedForAll(from, msg.sender),
+            "Unauthorized"
+        );
+        _safeBatchTransferFrom(from, to, ids, amounts, data);
     }
-    */
+
+    function supportsInterface(bytes4 interfaceId)
+        external
+        pure
+        returns (bool)
+    {
+        return
+            interfaceId == type(IERC1155).interfaceId ||
+            interfaceId == type(IERC165).interfaceId;
+    }
 
     function _asSingletonArray(uint256 element)
         private
@@ -139,5 +160,67 @@ contract ERC1155 is IERC1155 {
         array[0] = element;
 
         return array;
+    }
+
+    function isContract(address account) internal view returns (bool) {
+        return account.code.length > 0;
+    }
+
+    function _doSafeTransferAcceptanceCheck(
+        address operator,
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) private {
+        if (isContract(to)) {
+            try
+                IERC1155Receiver(to).onERC1155Received(
+                    operator,
+                    from,
+                    id,
+                    amount,
+                    data
+                )
+            returns (bytes4 response) {
+                if (response != IERC1155Receiver.onERC1155Received.selector) {
+                    revert("ERC1155: ERC1155Receiver rejected tokens");
+                }
+            } catch Error(string memory reason) {
+                revert(reason);
+            } catch {
+                revert("ERC1155: transfer to non ERC1155Receiver implementer");
+            }
+        }
+    }
+
+    function _doSafeBatchTransferAcceptanceCheck(
+        address operator,
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) private {
+        if (isContract(to)) {
+            try
+                IERC1155Receiver(to).onERC1155BatchReceived(
+                    operator,
+                    from,
+                    ids,
+                    amounts,
+                    data
+                )
+            returns (bytes4 response) {
+                if (response != IERC1155Receiver.onERC1155Received.selector) {
+                    revert("ERC1155: ERC1155Receiver rejected tokens");
+                }
+            } catch Error(string memory reason) {
+                revert(reason);
+            } catch {
+                revert("ERC1155: transfer to non ERC1155Receiver implementer");
+            }
+        }
     }
 }
