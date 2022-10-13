@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract SLSNFT is ERC1155, Ownable {
+contract SlsNFT is ERC1155, Ownable {
     uint256 public constant ARTWORK = 0;
     uint256 public constant PHOTO = 1;
 
