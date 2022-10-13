@@ -2,7 +2,7 @@ const { getNamedAccounts, ethers } = require("hardhat")
 
 async function main() {
     const { deployer, user, hero, villain } = await getNamedAccounts()
-    const geneCoin = await ethers.getContract("geneCoin", deployer)
+    const geneCoin = await ethers.getContract("GeneCoin", deployer)
 
     console.log("transfering 290 geneCoin from deployer to user")
     const c = await geneCoin.transfer(user, 290)
