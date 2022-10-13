@@ -1,30 +1,20 @@
 Arguments: 
-  /snap/node/6619/bin/node /usr/local/bin/yarn add --dev @openzeppelin-contracts
+  /home/legazole/.nvm/versions/node/v18.8.0/bin/node /usr/local/bin/yarn add --dev @openzeppelin/contracts
 
 PATH: 
-  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+  /home/legazole/.nvm/versions/node/v18.8.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
 
 Yarn version: 
   1.22.18
 
 Node version: 
-  16.17.0
+  18.8.0
 
 Platform: 
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@openzeppelin-contracts: Request "https://registry.yarnpkg.com/@openzeppelin-contracts" returned a 405
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66147:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140883:22)
-      at Request.emit (node:events:513:28)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141855:10)
-      at Request.emit (node:events:513:28)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141777:12)
-      at Object.onceWrapper (node:events:627:28)
-      at IncomingMessage.emit (node:events:525:35)
-      at endReadableNT (node:internal/streams/readable:1358:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: EACCES: permission denied, unlink '/home/legazole/ethdev/solidityByExample/node_modules/.yarn-integrity'
 
 npm manifest: 
   {
