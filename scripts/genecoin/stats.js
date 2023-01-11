@@ -2,7 +2,7 @@ const { getNamedAccounts, ethers } = require("hardhat")
 
 async function main() {
     const { deployer } = await getNamedAccounts()
-    const geneCoin = await ethers.getContract("geneCoin", deployer)
+    const geneCoin = await ethers.getContract("GeneCoin", deployer)
 
     const totalSupply = await geneCoin.totalSupply()
     const tokenName = await geneCoin.name()

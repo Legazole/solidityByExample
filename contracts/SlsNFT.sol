@@ -21,11 +21,7 @@ contract SlsNFT is ERC1155, Ownable {
         _mint(to, tokenId, amount, "");
     }
 
-    function burn(
-        address from,
-        uint256 id,
-        uint256 amount
-    ) public onlyOwner {
+    function burn(address from, uint256 id, uint256 amount) public onlyOwner {
         _burn(from, id, amount);
     }
 }

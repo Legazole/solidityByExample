@@ -5,7 +5,9 @@
   "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
-    "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/contracts": "^4.8.0",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "hardhat": "^2.11.1",
     "hardhat-deploy": "^0.11.14",
     "prettier": "^2.7.1",
