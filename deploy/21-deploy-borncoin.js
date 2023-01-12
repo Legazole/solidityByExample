@@ -4,7 +4,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deployer } = await getNamedAccounts()
     const { deploy, log } = deployments
 
-    log("deploying borncoin on localhost")
+    log("deploying borncoin on network")
 
     const coin = await deploy("BornCoin", {
         from: deployer,

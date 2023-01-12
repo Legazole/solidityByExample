@@ -11,15 +11,10 @@ contract BornCoin is IERC20 {
     string public symbol = "BRNC";
     uint256 public decimals = 18;
 
-    address owner1 = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
-    address owner2 = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
+    address owner1 = 0xd66E9945a68Ac737cf506d78372A240862C405Bd;
 
     constructor() {
-        _mint(
-            owner1,
-            1000 /** 10**decimals()*/
-        );
-        _mint(owner2, 1000);
+        _mint(owner1, 1000 /** 10**decimals()*/);
         _mint(address(this), 1000);
     }
 
@@ -34,10 +29,10 @@ contract BornCoin is IERC20 {
         emit Transfer(address(0), account, amount);
     }
 
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool)
-    {
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) external returns (bool) {
         balanceOf[msg.sender] -= amount;
         balanceOf[recipient] += amount;
         emit Transfer(msg.sender, recipient, amount);
