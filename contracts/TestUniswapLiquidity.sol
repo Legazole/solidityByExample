@@ -10,7 +10,10 @@ contract TestUniswapLiquidity {
         0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address private constant ROUTER =
         0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
-    address private constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address private constant BORNCOIN =
+        0x9a46Bb993b88C81533AeeB79A456800EB372fc42;
+    address private constant GENECOIN =
+        0x9104BEcFf0a858bbf407Ff466E58EA1857fF33dF;
 
     function addLiquidity(
         address _tokenA,
@@ -24,7 +27,10 @@ contract TestUniswapLiquidity {
         IERC20(_tokenA).approve(ROUTER, _amountA);
         IERC20(_tokenB).approve(ROUTER, _amountB);
 
-        (uint amountA, uint amountB, uint liquidity) = IUniswapV2Router01(
+        uint _amountAMin = ((_amountA / 100) * 99);
+        uint _amountBmin = ((_amountA / 100) * 99);
+
+        (uint amountA, uint amountB, uint liquidity) = IUniswapV2Router02(
             ROUTER
         ).addLiquidity(
                 _tokenA,
