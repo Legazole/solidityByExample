@@ -61,4 +61,20 @@ contract TestUniswapLiquidity {
                 block.timestamp
             );
     }
+
+    function getFactoryAddress() public pure returns (address) {
+        return FACTORY;
+    }
+
+    function getRouterAddress() public pure returns (address) {
+        return ROUTER;
+    }
+
+    function getBorncoinAddress() public pure returns (address) {
+        return BORNCOIN;
+    }
+
+    function getGenecoinAddress() public pure returns (address) {
+        return GENECOIN;
+    }
 }
