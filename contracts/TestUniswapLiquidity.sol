@@ -15,6 +15,10 @@ contract TestUniswapLiquidity {
     address private constant GENECOIN =
         0x9104BEcFf0a858bbf407Ff466E58EA1857fF33dF;
 
+    function transferToContract(address _token, uint _amount) public {
+        IERC20(_token).transferFrom(msg.sender, address(this), _amount);
+    }
+
     function addLiquidity(
         address _tokenA,
         address _tokenB,
