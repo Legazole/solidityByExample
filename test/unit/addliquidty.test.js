@@ -83,5 +83,12 @@ describe("TestUniswapLiquidity", function () {
             )
             assert.equal(startContractBalance + amount, afterContractBalance)
         })
+        it("should test if the genecoin mint function works", async function () {
+            const startingBalance = await geneCoin.getContractgeneCoinBalance()
+            await geneCoin.mint(geneCoin.address, amount)
+            const endingBalance = await geneCoin.getContractgeneCoinBalance()
+            const testingBalance = startingBalance + amount
+            assert.equal(testingBalance.toString(), endingBalance.toString())
+        })
     })
 })
