@@ -21,7 +21,6 @@ contract TestUniswapLiquidity {
 
     function transferTokensToContract(address _tokenA, uint _amountA) public {
         IERC20(_tokenA).approve(address(this), _amountA);
-
         IERC20(_tokenA).transferFrom(msg.sender, address(this), _amountA);
     }
 
