@@ -73,19 +73,15 @@ describe("TestUniswapLiquidity", function () {
             const senderGenecoinBalance = await geneCoin.balanceOf(deployer)
             assert.equal(senderGenecoinBalance.toString(), geneCoinAmount)
         })
-        it("should check if the IERC20 transfer function works", async function () {
-            const tx = await geneCoin.approve(testUniswap.address, amount)
-            await tx.wait(1)
-            const startContractBalance = await geneCoin.balanceOf(
+        it("should check if the testUniswap transferToContract function works", async function () {
+            const startingContractBalance = await geneCoin.balanceOf(
                 testUniswap.address
             )
             await testUniswap.transferToContract(geneCoin.address, amount)
-            const afterContractBalance = await geneCoin.balanceOf(
-                testUniswap.address
-            )
+            const endingBalance = await geneCoin.balanceOf(testUniswap.address)
             assert.equal(
-                parseInt(startContractBalance + amount),
-                parseInt(afterContractBalance)
+                parseInt(startingContractBalance + amount),
+                parseInt(endingBalance)
             )
         })
         it("should check if the TransferTokensToContract function works", async function () {

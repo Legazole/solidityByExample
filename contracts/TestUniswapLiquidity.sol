@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import "./GeneCoin.sol";
 
 contract TestUniswapLiquidity {
     address private constant FACTORY =
@@ -12,11 +13,15 @@ contract TestUniswapLiquidity {
         0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     address private constant BORNCOIN =
         0x9a46Bb993b88C81533AeeB79A456800EB372fc42;
-    address private constant GENECOIN =
-        0x9104BEcFf0a858bbf407Ff466E58EA1857fF33dF;
+    address payable private constant GENECOIN =
+        payable(0x9104BEcFf0a858bbf407Ff466E58EA1857fF33dF);
+    //payable(0x5FbDB2315678afecb367f032d93F642f64180aa3);
 
-    function transferToContract(address _token, uint _amount) public {
+    GeneCoin geneCoin = GeneCoin(GENECOIN);
+
+    function transferToContract(address _token, uint _amount) external {
         IERC20(_token).transferFrom(msg.sender, address(this), _amount);
+        //geneCoin.transferFrom(msg.sender, address(this), _amount);
     }
 
     function transferTokensToContract(address _tokenA, uint _amountA) public {
