@@ -29,6 +29,8 @@ describe("TestUniswapLiquidity", function () {
         testUniswap = await ethers.getContract("TestUniswapLiquidity", deployer)
         await deployments.fixture(["genecoin"])
         geneCoin = await ethers.getContract("GeneCoin", deployer)
+        await deployments.fixture(["borncoin"])
+        bornCoin = await ethers.getContract("BornCoin", deployer)
         await testUniswap.setInteractableERC20Contract(geneCoin.address)
     })
     describe("variables", async function () {
@@ -93,7 +95,7 @@ describe("TestUniswapLiquidity", function () {
                 testUniswap.address
             )
             const expectedValue = parseInt(contractAllowance + amount)
-            await testUniswap.approveOnErc20(testUniswap.address, amount)
+            await geneCoin.approve(testUniswap.address, amount)
             const actualValue = await geneCoin.allowance(
                 deployer,
                 testUniswap.address
@@ -101,6 +103,7 @@ describe("TestUniswapLiquidity", function () {
             assert.equal(expectedValue.toString(), actualValue.toString())
         })
         it("should check if the testUniswap transferToContract function works", async function () {
+            await geneCoin.approve(testUniswap.address, amount)
             const startingContractBalance = await geneCoin.balanceOf(
                 testUniswap.address
             )
@@ -112,11 +115,25 @@ describe("TestUniswapLiquidity", function () {
             )
         })
         it("should check if the TransferTokensToContract function works", async function () {
+            await geneCoin.approve(testUniswap.address, amount)
             const startBalance = await geneCoin.balanceOf(testUniswap.address)
-            genecoinAddress = await testUniswap.getGenecoinAddress()
-            await testUniswap.transferTokensToContract(geneCoin.address, 1)
-            const afterBalance = await geneCoin.balanceOf(testUniswap.address)
-            assert.equal(startBalance, afterBalance)
+            const expectedValue = parseInt(startBalance + amount)
+            await testUniswap.transferTokensToContract(geneCoin.address, amount)
+            const actualValue = await geneCoin.balanceOf(testUniswap.address)
+            assert.equal(expectedValue.toString(), actualValue.toString())
+        })
+        it("should check if the addliquidity function works", async function () {
+            let amountA = 10,
+                amountB = 10,
+                tokenA = geneCoin.address,
+                tokenB = bornCoin.address
+
+            await geneCoin.approve(testUniswap.address, amountA)
+            await bornCoin.approve(testUniswap.address, amountB)
+            await testUniswap.addLiquidity(tokenA, tokenB, amountA, amountB)
+
+            // const expectedValue;
+            // const actualValue;
         })
     })
 })

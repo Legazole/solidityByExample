@@ -36,11 +36,6 @@ contract TestUniswapLiquidity {
         IERC20(_token).approve(_spender, _amount);
     }
 
-    function transferToContract(address _token, uint _amount) external {
-        IERC20(_token).transferFrom(msg.sender, address(this), _amount);
-        //geneCoin.transferFrom(msg.sender, address(this), _amount);
-    }
-
     function transferTokensToContract(address _tokenA, uint _amountA) public {
         IERC20(_tokenA).approve(address(this), _amountA);
         IERC20(_tokenA).transferFrom(msg.sender, address(this), _amountA);
@@ -52,9 +47,6 @@ contract TestUniswapLiquidity {
         uint _amountA,
         uint _amountB
     ) public {
-        IERC20(_tokenA).approve(address(this), _amountA);
-        IERC20(_tokenB).approve(address(this), _amountB);
-
         IERC20(_tokenA).transferFrom(msg.sender, address(this), _amountA);
         IERC20(_tokenB).transferFrom(msg.sender, address(this), _amountB);
 
