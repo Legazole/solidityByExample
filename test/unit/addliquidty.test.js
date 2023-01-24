@@ -1,5 +1,5 @@
 const { ethers, getNamedAccounts } = require("hardhat")
-const { expect, assert } = require("chai")
+const { expect, assert, util } = require("chai")
 const { deployments } = require("hardhat")
 
 //Option 1:
@@ -29,6 +29,7 @@ describe("TestUniswapLiquidity", function () {
         testUniswap = await ethers.getContract("TestUniswapLiquidity", deployer)
         await deployments.fixture(["genecoin"])
         geneCoin = await ethers.getContract("GeneCoin", deployer)
+        await testUniswap.setInteractableERC20Contract(geneCoin.address)
     })
     describe("variables", async function () {
         it("Should start with the factory address initialized on the goerli network", async function () {
@@ -72,6 +73,32 @@ describe("TestUniswapLiquidity", function () {
         it("should check if the msg.sender genecoin balance = 1000", async function () {
             const senderGenecoinBalance = await geneCoin.balanceOf(deployer)
             assert.equal(senderGenecoinBalance.toString(), geneCoinAmount)
+        })
+        it("should check the contract callers balance", async function () {
+            const callerBalance = await geneCoin.balanceOf(deployer)
+            const contractBalance = await geneCoin.balanceOf(
+                testUniswap.address
+            )
+            const correctBalance = parseInt(contractBalance + callerBalance)
+            assert.equal(callerBalance.toString(), correctBalance.toString())
+        })
+        // it("should check if the interactable contract can be changed", async function () {
+        //     const expectedValue = geneCoin.address
+        //     const actualValue = await testUniswap.getInteractableERC20()
+        //     assert.equal(expectedValue.toString(), actualValue.toString())
+        // })
+        it("should check if the approve function works", async function () {
+            const contractAllowance = await geneCoin.allowance(
+                deployer,
+                testUniswap.address
+            )
+            const expectedValue = parseInt(contractAllowance + amount)
+            await testUniswap.approveOnErc20(testUniswap.address, amount)
+            const actualValue = await geneCoin.allowance(
+                deployer,
+                testUniswap.address
+            )
+            assert.equal(expectedValue.toString(), actualValue.toString())
         })
         it("should check if the testUniswap transferToContract function works", async function () {
             const startingContractBalance = await geneCoin.balanceOf(

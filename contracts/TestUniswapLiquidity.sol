@@ -18,6 +18,23 @@ contract TestUniswapLiquidity {
     //payable(0x5FbDB2315678afecb367f032d93F642f64180aa3);
 
     GeneCoin geneCoin = GeneCoin(GENECOIN);
+    IERC20 Erc20;
+
+    function setInteractableERC20Contract(address _token) external {
+        Erc20 = IERC20(_token);
+    }
+
+    function approveOnErc20(address _spender, uint256 _amount) external {
+        Erc20.approve(_spender, _amount);
+    }
+
+    function approveERC20Amount(
+        address _token,
+        address _spender,
+        uint256 _amount
+    ) external {
+        IERC20(_token).approve(_spender, _amount);
+    }
 
     function transferToContract(address _token, uint _amount) external {
         IERC20(_token).transferFrom(msg.sender, address(this), _amount);
@@ -93,5 +110,9 @@ contract TestUniswapLiquidity {
 
     function getGenecoinAddress() public pure returns (address) {
         return GENECOIN;
+    }
+
+    function getInteractableERC20() public view returns (address) {
+        return address(Erc20);
     }
 }
