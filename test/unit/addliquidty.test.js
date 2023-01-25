@@ -107,7 +107,7 @@ describe("TestUniswapLiquidity", function () {
             const startingContractBalance = await geneCoin.balanceOf(
                 testUniswap.address
             )
-            await testUniswap.transferToContract(geneCoin.address, amount)
+            await testUniswap.transferTokensToContract(geneCoin.address, amount)
             const endingBalance = await geneCoin.balanceOf(testUniswap.address)
             assert.equal(
                 parseInt(startingContractBalance + amount),
@@ -124,16 +124,28 @@ describe("TestUniswapLiquidity", function () {
         })
         it("should check if the addliquidity function works", async function () {
             let amountA = 10,
-                amountB = 10,
-                tokenA = geneCoin.address,
-                tokenB = bornCoin.address
+                amountB = 10
+            //     tokenA = geneCoin.address,
+            //     tokenB = bornCoin.address
 
             await geneCoin.approve(testUniswap.address, amountA)
             await bornCoin.approve(testUniswap.address, amountB)
-            await testUniswap.addLiquidity(tokenA, tokenB, amountA, amountB)
 
-            // const expectedValue;
-            // const actualValue;
+            // await testUniswap.addLiquidity(tokenA, tokenB, amountA, amountB)
+
+            // // const expectedValue;
+            // // const actualValue;
+            let tx = await testUniswap.addLiquidity(
+                geneCoin.address,
+                bornCoin.address,
+                amountA,
+                amountB,
+                { from: deployer }
+            )
+            console.log("======= add liquidity ==========")
+            for (const log of tx.logs) {
+                console.log(`${logs.args.message} ${log.args.actualValue}`)
+            }
         })
     })
 })

@@ -1,67 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./interfaces/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract BornCoin is IERC20 {
-    uint256 public totalSupply;
-    mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
-    string public name = "BornCoin";
-    string public symbol = "BRNC";
-    uint256 public decimals = 18;
-
+contract BornCoin is ERC20 {
     address owner1 = 0xd66E9945a68Ac737cf506d78372A240862C405Bd;
 
-    constructor() {
+    constructor() ERC20("bornCoin", "BRNC") {
         _mint(owner1, 1000 /** 10**decimals()*/);
         _mint(address(this), 1000);
     }
 
-    function _mint(address account, uint256 amount) internal virtual {
-        require(account != address(0), "ERC20: mint to the zero address");
-
-        totalSupply += amount;
-        unchecked {
-            // Overflow not possible: balance + amount is at most totalSupply + amount, which is checked above.
-            balanceOf[account] += amount;
-        }
-        emit Transfer(address(0), account, amount);
-    }
-
-    function transfer(
-        address recipient,
-        uint256 amount
-    ) external returns (bool) {
-        balanceOf[msg.sender] -= amount;
-        balanceOf[recipient] += amount;
-        emit Transfer(msg.sender, recipient, amount);
-        return true;
-    }
-
-    function approve(address spender, uint256 amount) external returns (bool) {
-        allowance[msg.sender][spender] += amount;
-        emit Approval(msg.sender, spender, amount);
-        return true;
-    }
-
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) external returns (bool) {
-        require(allowance[msg.sender][sender] >= amount);
-        balanceOf[sender] -= amount;
-        allowance[sender][msg.sender] -= amount;
-        balanceOf[recipient] += amount;
-        emit Transfer(sender, recipient, amount);
-        return true;
-    }
-
     function mint(address recipient, uint256 amount) internal {
-        balanceOf[recipient] += amount;
-        totalSupply += amount;
-        emit Transfer(address(0), recipient, amount);
+        _mint(recipient, amount);
     }
 
     receive() external payable {

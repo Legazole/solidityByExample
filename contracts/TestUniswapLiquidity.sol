@@ -17,6 +17,8 @@ contract TestUniswapLiquidity {
         payable(0x9104BEcFf0a858bbf407Ff466E58EA1857fF33dF);
     //payable(0x5FbDB2315678afecb367f032d93F642f64180aa3);
 
+    event Log(string message, uint256 val);
+
     GeneCoin geneCoin = GeneCoin(GENECOIN);
     IERC20 Erc20;
 
@@ -37,7 +39,6 @@ contract TestUniswapLiquidity {
     }
 
     function transferTokensToContract(address _tokenA, uint _amountA) public {
-        IERC20(_tokenA).approve(address(this), _amountA);
         IERC20(_tokenA).transferFrom(msg.sender, address(this), _amountA);
     }
 
@@ -53,8 +54,8 @@ contract TestUniswapLiquidity {
         IERC20(_tokenA).approve(ROUTER, _amountA);
         IERC20(_tokenB).approve(ROUTER, _amountB);
 
-        uint _amountAMin = ((_amountA / 100) * 99);
-        uint _amountBmin = ((_amountA / 100) * 99);
+        // uint _amountAMin = ((_amountA / 100) * 99);
+        // uint _amountBmin = ((_amountA / 100) * 99);
 
         (uint amountA, uint amountB, uint liquidity) = IUniswapV2Router02(
             ROUTER
@@ -68,6 +69,10 @@ contract TestUniswapLiquidity {
                 address(this),
                 block.timestamp
             );
+
+        emit Log("amountA", amountA);
+        emit Log("amountB", amountB);
+        emit Log("Liquidity", liquidity);
     }
 
     function removeLiquidity(address _tokenA, address _tokenB) external {

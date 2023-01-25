@@ -11,10 +11,10 @@ contract ERC20 is IERC20 {
     string public symbol = "GCOIN";
     uint8 public decimals = 18;
 
-    function transfer(address recipient, uint256 amount)
-        external
-        returns (bool)
-    {
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) external returns (bool) {
         balanceOf[msg.sender] - amount;
         balanceOf[recipient] += amount;
         emit Transfer(msg.sender, recipient, amount);
